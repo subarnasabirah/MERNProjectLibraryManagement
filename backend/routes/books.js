@@ -11,14 +11,16 @@ router.route('/').get((req, res) => {
 
 
 router.route('/add').post((req, res) => { 
-    const booktitle = req.body.booktitle;
+    const bookname = req.body.bookname;
     const author = req.body.author;
     const description = req.body.description;
+    const bookid = req.body.bookid;
 
     const newBook = new Book({
-        booktitle,
+        bookname,
         author,
-        description
+        description,
+        bookid
     });
 
     newBook.save()
@@ -40,9 +42,10 @@ router.route('/:id').delete((req, res) => {
 router.route('/update/:id').post((req, res) => {
     Book.findById(req.params.id)
         .then(book => {
-            book.booktitle = req.body.booktitle;
+            book.bookname = req.body.bookname;
             book.author = req.body.author;
             book.description = req.body.description;
+            book.bookid = req.body.bookid;
 
             book.save()
                 .then(() => res.json('Book update'))

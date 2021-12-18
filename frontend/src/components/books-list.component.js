@@ -7,7 +7,8 @@ const Book = props => (
         <td>{props.book.bookname}</td>
         <td>{props.book.author}</td>
         <td>{props.book.description}</td>
-        <td><Link to={"/edit/" + props.book._id}>eid</Link>|<a href="#" onclick={ () => {props.deleteBook(props.book._id)}}>Delete</a></td>
+        <td>{props.book.bookid}</td>
+        <td><Link to={"/edit/" + props.book._id}>Edit</Link>|<a href="#" onClick={ () => {props.deleteBook(props.book._id)}}>Delete</a></td>
     </tr>
 )
 
@@ -30,8 +31,9 @@ export default class BooksList extends Component {
     }
     
     deleteBook(id) {
-        axios.delete('http//localhost: 5000/books/' + id)
+        axios.delete('http//localhost: 5000/books/'+id)
             .then(res => console.log(res.data));
+        
         this.setState({
             books: this.state.books.filter(el => el._id !== id)
         })
@@ -39,7 +41,7 @@ export default class BooksList extends Component {
 
     bookList() {
         return this.state.books.map(currentbook => {
-            return <Book book={currentbook} deletebook={this.deleteBook} key={currentbook._id} />;
+            return <Book book={currentbook} deleteBook={this.deleteBook} key={currentbook._id} />;
         })
     }
         
@@ -51,14 +53,15 @@ export default class BooksList extends Component {
                 <table className="table">
                     <thead className="table">
                         <tr>
-                            <th>Bookname</th>
+                            <th>Book Title</th>
                             <th>Author</th>
                             <th>Description</th>
+                            <th>Book ID</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        { this.bookList()}
+                        { this.bookList() }
                     </tbody>
                 </table>
             </div>

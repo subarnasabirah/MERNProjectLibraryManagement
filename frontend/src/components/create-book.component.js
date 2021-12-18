@@ -9,6 +9,7 @@ export default class CreateBook extends Component {
         this.onChangeBookname = this.onChangeBookname.bind(this);
         this.onChangeAuthor = this.onChangeAuthor.bind(this);
         this.onChangeDescription = this.onChangeDescription.bind(this);
+        this.onChangeBookid = this.onChangeBookid.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
@@ -16,22 +17,22 @@ export default class CreateBook extends Component {
             bookname: '',
             author: '',
             description: '',
+            bookid: '',
             books: []
         }
     }
 
-    componentDidMount() {
-        axios.get('http://localhost:5000/books/' +this.props.match.params.id)
-            .then(response => {
-                if (response) {
-                    this.setState({
-                        bookname: response.data.bookname,
-                        author: response.data.author,
-                        description: response.data.description
-                })
-            }
-        })
-    }
+    // componentDidMount() {
+    //     axios.get('http://localhost:5000/books/')
+    //         .then(response => {
+    //             if (response.data.length > 0) {
+    //                 this.setState({
+    //                     books: response.data.map(book => book.bookname),
+    //                     bookname: response.data[0].bookname
+    //             })
+    //         }
+    //     })
+    // }
 
     // onChangeUsername(e) {
     //     this.setState({
@@ -57,6 +58,12 @@ export default class CreateBook extends Component {
         });
     }
 
+    onChangeBookid(e) {
+        this.setState({
+            bookid: e.target.value
+        });
+    }
+
     onSubmit(e) {
         e.preventDefault();
 
@@ -64,13 +71,13 @@ export default class CreateBook extends Component {
             // username: this.state.username,
             bookname: this.state.bookname,
             author: this.state.author,
-            description: this.state.description
+            description: this.state.description,
+            bookid: this.state.bookid,
         }
         console.log(book);
 
-          axios.post('http://localhost:5000/books/update'+this.props.match.params.id, book)
+          axios.post('http://localhost:5000/books/add', book)
             .then(res => console.log(res.data));
-
         window.location = '/';
     }
 
@@ -78,7 +85,7 @@ export default class CreateBook extends Component {
     render() {
         return (
             <div>
-                <h3>Edit Book</h3>
+                <h3>Add New Book</h3>
                 <form onSubmit={this.onSubmit}>
                     {/* <div className="form-group">
                         <label>Username: </label>
@@ -95,33 +102,35 @@ export default class CreateBook extends Component {
                         </select>
                     </div> */}
                     <div className="form-group" >
-                        <label>Bookname: </label>
-                        <select style={{ color: "#000"}}
-                            className="form-control" value={this.onChangeBookname} onChange={this.onChangeBookname}>
-                            {
-                            this.state.books.map(function (book) {
-                                return <option key={book}
-                                    value={book}>{book}</option>;
-                            })
-                            }
-                        </select>
+                        <label>Book Title </label>
+                        <input type="text" required
+                            className="form-control"
+                            value={this.state.bookname}
+                            onChange={this.onChangeBookname}/>
                     </div>
                     <div className="form-group">
-                        <label>Author: </label>
+                        <label>Author </label>
                         <input type="text" required
                             className="form-control"
                             value={this.state.author}
                             onChange={this.onChangeAuthor}/>
                     </div>
                      <div className="form-group">
-                        <label>Description: </label>
+                        <label>Description </label>
                         <input type="text" required
                             className="form-control"
-                            value={this.state.desctiption}
+                            value={this.state.description}
                             onChange={this.onChangeDescription}/>
                     </div>
+                     <div className="form-group">
+                        <label>Book ID</label>
+                        <input type="number" required
+                            className="form-control"
+                            value={this.state.bookid}
+                            onChange={this.onChangeBookid}/>
+                    </div>
                     <div className="form-group">
-                        <input type="submit" value="Edit Book" className="btn btn-primary mt-2" />
+                        <input type="submit" value="Add New Book" className="btn btn-primary mt-2" />
                     </div>
                 </form>
             </div>

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const bookSchema = new Schema({
-    booktitle: {
+    bookname: {
         type: String,
         // required: true
     },
@@ -14,6 +14,10 @@ const bookSchema = new Schema({
     description: {
         type: String,
         required: true
+    },
+    bookid: {
+        type: Number,
+        require: true
     },
 }, {
     timestamps: true,
